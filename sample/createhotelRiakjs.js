@@ -1,5 +1,6 @@
-var riakClient = require("riak-js").getClient({host: "localhost", port:"10018", api:"http"});// = require("riak")
+var riakClient = require("riak-js").getClient({'host': "127.0.0.1", 'port':"10018", 'api': 'http', debug:true});
 var poolModule = require("generic-pool");
+var sys = require("sys");
 
 var client;
 var styles = ['single', 'double', 'queen', 'king', 'suite'];
@@ -7,9 +8,9 @@ var styles = ['single', 'double', 'queen', 'king', 'suite'];
 console.log("configure riakclient");
 
 var instrument = {
-	/*'riak.request.start': function(event){
+	'riak.request.start': function(event){
 		console.log("[riak-js]" + event.method.toUpperCase() + " " + event.path);
-	},*/
+	},
 	'riak.request.finish': function(event){
 		console.log("[riak-js]" + event.method.toUpperCase() + " " + event.path);
 	},
@@ -39,11 +40,24 @@ var pool = poolModule.Pool({
 });
 */
 
+//save using riakjs
+function doSave(bucket, roomKey, data){
+	riakClient.save(bucket, roomKey, data, function(error, data){
+		if(error != null){
+			console.log(error);
+		}
+		else{
+			riakClient.get(bucket, roomKey, function(err, data2, meta){
+				console.log(sys.log(JSON.stringify(data2)));	
+			});
+		}
+	});
+}
+
 var bucket = "rooms";
-//riakClient.saveBucket(bucket, {search: true});
 
 //Create 100 floors in the building
-var max = 100;
+var max = 10;
 for(var floor = 1 ; floor < max; floor++){
 	var current_rooms_block = floor * 100;
 	
@@ -82,20 +96,6 @@ for(var floor = 1 ; floor < max; floor++){
 		*/
 	}
 }
-
-function doSave(bucket, roomKey, data){
-	riakClient.save(bucket, roomKey, data, function(error){
-		if(error != null){
-			console.log(error);
-		}
-		else{
-			riakClient.get(bucket, roomKey, function(err, data, meta){
-				console.log("room: " + sys.inspect(data));	
-			});
-		}
-	});
-}
-//riakClient.keys(bucket, { keys: 'stream' }).on('keys', console.dir).start();
 
 
 console.log("exiting");
