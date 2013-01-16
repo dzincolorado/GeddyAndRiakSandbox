@@ -15,7 +15,7 @@
  * limitations under the License.
  *
 */
-
+/*
 var config = {
   detailedErrors: true
 , debug: true
@@ -24,6 +24,33 @@ var config = {
 , model: {
     defaultAdapter: 'memory'
   }
+, sessions: {
+    store: 'memory'
+  , key: 'sid'
+  , expiry: 14 * 24 * 60 * 60
+  }
+};
+*/
+
+var config = {
+  detailedErrors: true
+, debug: true
+, hostname: 'localhost'
+, port: 4000
+, model: {
+    defaultAdapter: 'mongo'
+  }
+, db: {
+    mongo: {
+      username: null
+     dbname: 'getitdone'
+    , prefix: null
+    , password: null
+    , host: 'localhost'
+    , port: 27017
+    }
+  }
+  //TODO: use redis for session store
 , sessions: {
     store: 'memory'
   , key: 'sid'

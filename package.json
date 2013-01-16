@@ -1,0 +1,12 @@
+{
+  "name": "GeddyAndRiakSandbox",
+  "version": "0.0.1",
+  "dependencies": {
+    "geddy": "0.6.x",
+    "mongodb-wrapper": "0.4.x"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}

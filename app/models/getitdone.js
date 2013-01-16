@@ -13,6 +13,8 @@ var Getitdone = function () {
   this.validatesWithFunction('status', function(status){
   	return status === 'open' || status === 'done';
   });
+  
+  //this.adapter = "mongo";
 
   /*
   this.property('login', 'string', {required: true});
